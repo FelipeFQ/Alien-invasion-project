@@ -13,7 +13,7 @@ class Ship:
          self.image = pygame.image.load('images/Gimages/ship0.bmp')
          self.rect = self.image.get_rect()
 
-         # Start ech new ship at the center of the screen.
+         # Start each new ship at the center of the screen.
          self.rect.center = self.screen_rect.center
 
          # Store a float for the ship's exact  vertical and horizontal position.
