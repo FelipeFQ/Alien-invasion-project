@@ -54,7 +54,25 @@ class AlienInvasion:
             self._update_screen() # Ensure screen updates even when inactive.GPT
             self.clock.tick(60)
     
-    
+    def _start_game(self):
+        """Start a new game by resetting the stats and creating ne game elements."""
+        # Reset game statistics
+        self.stats.reset_stats()
+        self.game_active = True
+        
+        # Get rid of any remaining bullets and aliens.
+        self.bullets.empty()
+        self.aliens.empty()
+
+        # Create a new fleet and center the ship.
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Hide the mouse cursor.
+        pygame.mouse.set_visible(False)
+
+        
+
     def _check_events(self):
         # Respond to keypresses and mouse events.
         for event in pygame.event.get():
@@ -71,23 +89,8 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clcks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active: 
-
-            # Reset game statistics
-            self.stats.reset_stats()
-            self.game_active = True
-            
-            # Get rid of any remaining bullets and aliens.
-            self.bullets.empty()
-            self.aliens.empty()
-
-            # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
-
-            # Hide the mouse cursor.
-            pygame.mouse.set_visible(False)
-
+        if button_clicked and not self.game_active:
+            self._start_game()
 
 
     def _check_keydown_events(self, event):
@@ -102,6 +105,9 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_p:
+            if not self.game_active:
+                self._start_game()
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
