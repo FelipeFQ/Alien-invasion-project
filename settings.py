@@ -19,8 +19,14 @@ class Settings:
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
 
-        # Alien settings
-        self.alien_speed = 1.0
-        self.fleet_advance_speed = 10
-        # fleet_direction of 1 represents down, -1 represents up.
-        self.fleet_direction = 1
+        # Square settings
+        self.square_width = 70
+        self.square_height = 70  
+        self.square_speed = 1.0
+        self.square_color = (255, 0, 0)  
+        self.misses_limit = 10
+        self.hits = 0
+
+        # Square_direction 
+        self.x_square_direction = 1
+        self.y_square_direction = 1

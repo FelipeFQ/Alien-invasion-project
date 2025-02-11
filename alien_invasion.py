@@ -7,7 +7,7 @@ from settings import Settings
 from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
-from alien import Alien
+from square import Square
 
 class AlienInvasion:
     """Overall to manage game assets ang behaviors"""
@@ -28,9 +28,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.aliens = pygame.sprite.Group()
+        self.square = pygame.sprite.Group()
 
-        self._create_fleet()
+        self._create_square()
 
         # Start Alien Invasion in an active state.
         self.game_active = True
@@ -43,7 +43,7 @@ class AlienInvasion:
             if self.game_active:
                 self.ship.update()
                 self._update_bullets()
-                self._update_aliens()
+                self._update_square()
 
             self._update_screen()
             self.clock.tick(60)
@@ -97,122 +97,66 @@ class AlienInvasion:
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
 
-        if not self.aliens:
-            # Destroy exiting bullets and create new fleet.
-            self.bullets.empty()
-            self._create_fleet()
-
         
-        self._check_bullet_alien_collitions()
+        self._check_bullet_square_collitions()
 
-    def _check_bullet_alien_collitions(self):
-        """Respond to bullet-alien collitions."""
+    def _check_bullet_square_collitions(self):
+        """Respond to bullet-square collitions."""
         # Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(
-            self.bullets, self.aliens, True, True)
+            self.bullets, self.square, True, True)
         
-        if not self.aliens:
-            # Destroy existing bullets and create new fleet.
+        if not self.square:
+            # Destroy existing bullets and create new square.
             self.bullets.empty()
-            self._create_fleet()
+            self._create_square()
 
-    def _update_aliens(self):
-        """Check if the fleet is at an edge, then update positions."""
-        self._check_fleet_edges()
-        self.aliens.update()
+    def _update_square(self):
+        """Check if the square is at an edge, then update positions."""
+        self._check_square_edges()
+        self.square.update()
 
-        # Look for alien-ship collisions.
-        if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            self._ship_hit()
+    def _create_square(self):
+        """Create the training square."""
+        new_square = Square(self)
+        self.square.add(new_square)
 
-        # Look for aliens hitting the left side of the screen.
-        self._check_aliens_leftside()
 
-    def _ship_hit(self):
-        """Respond to the ship beeing hit by an alien."""
-        if self.stats.ships_left > 0:
-            # Decrement ships left.
-            self.stats.ship    # Decrement ships left.
-            self.stats.ships_left -= 1
+    def _check_square_edges(self):
+        """Check if the square has reached an edge and trigger direction change."""
+        for square in self.square.sprites():
+            hit_x = False
+            hit_y = False
 
-            # Get rid of any remaining bullets and aliens.
-            self.bullets.empty()
-            self.aliens.empty()
+        if square.rect.right >= self.settings.screen_width or square.rect.left <= 0:
+            hit_x = True  # Change X direction
+        if square.rect.bottom >= self.settings.screen_height or square.rect.top <= 0:
+            hit_y = True  # Change Y direction
 
-            # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
+        if hit_x or hit_y:
+            self._change_square_direction(hit_x, hit_y)
 
-            #Pause.
-            sleep(2.0)
 
-            # Get rid of any remaining bullets and aliens.
-            self.bullets.empty()
-            self.aliens.empty()
-
-            # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
-
-            #Pause.
-            sleep(2.0)
-        else:
-            self.game_active = False
-
-    def _create_fleet(self):
-        """Create the fleet of aliens."""
-        # Create and alien and keep adding aliens until there's no room left.
-        # Spacing between aliens is one alien height and one alien width.
-        alien = Alien(self)
-        alien_height, alien_width = alien.rect.size
-
-        current_y, current_x = alien_height, self.settings.screen_width - 2* alien_width
-        while current_x > ( 5 * alien_width):
-            while current_y < (self.settings.screen_height - 2 * alien_height):
-                self._create_alien(current_y, current_x)
-                current_y += 2 * alien_height
-
-            # Finished a row: reset y value, and decrease x value
-            current_y = alien_height
-            current_x -= 2 * alien_width
-        
-    def _create_alien(self, y_position, x_position):
-        """Create an alien and place it in the fleet."""
-        new_alien = Alien(self)
-        new_alien.y = y_position
-        new_alien.rect.y = y_position
-        new_alien.rect.x = x_position
-        self.aliens.add(new_alien)
-
-    def _check_fleet_edges(self):
-        """Responde appropriately if any aliens have reached the edge."""
-        for alien in self.aliens.sprites():
-            if alien.check_edges():
-                self._change_fleet_direction()
-                break
-
-    def _change_fleet_direction(self):
-        """Advance the etire fleet and change fleet's direction."""
-        for alien in self.aliens.sprites():
-            alien.rect.x -= self.settings.fleet_advance_speed
-        self.settings.fleet_direction *= -1 
-
-    def _check_aliens_leftside(self):
-        """check if any aliens have reach the left side of the screen."""
-        for alien in self.aliens.sprites():
-            if alien.rect.left <= 0:
-                # Treat this the same as if the ship got hit.
-                self._ship_hit()
-                break
+    def _change_square_direction(self, hit_x, hit_y):
+        """Reverse the square's movement direction."""
+        if hit_x:
+            self.settings.x_square_direction *= -1  # Reverse X movement only
+        if hit_y:
+            self.settings.y_square_direction *= -1  # Reverse Y movement only
+    
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
+
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.ship.blitme()
-        self.aliens.draw(self.screen)
-        
+
+        # ✅ Correct way to draw the square since it doesn't have an `image`
+        for square in self.square.sprites():
+            square.draw_square()
+
         pygame.display.flip()
 
 if __name__ == '__main__':
