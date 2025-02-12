@@ -8,6 +8,7 @@ from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from square import Square
+from button import Button
 
 class AlienInvasion:
     """Overall to manage game assets ang behaviors"""
@@ -32,8 +33,12 @@ class AlienInvasion:
 
         self._create_square()
 
-        # Start Alien Invasion in an active state.
-        self.game_active = True
+        # Start Alien Invasion in an inactive state.
+        self.game_active = False
+
+        # Make the play button.
+        self.play_button = Button(self, "Play")
+
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -58,6 +63,29 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when teh player clicks play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.game_active:
+            # Reset game statistics.
+            self.stats.reset_stats()
+            self.game_active = True
+
+            # Get rid of any remainig bullets and squares.
+            self.bullets.empty()
+            self.square.empty()
+
+            # Create a new square and center teh ship
+            self._create_square()
+            self.ship.center_ship()
+
+            # Hide the mouse cursor.
+            pygame.mouse.set_visible(False)
+
 
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
@@ -153,9 +181,13 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.ship.blitme()
 
-        # ✅ Correct way to draw the square since it doesn't have an `image`
+        # Draw the square to the screen.
         for square in self.square.sprites():
             square.draw_square()
+
+        # Draw the play button if the game is inactive.
+        if not self.game_active:
+            self.play_button.draw_button()
 
         pygame.display.flip()
 
