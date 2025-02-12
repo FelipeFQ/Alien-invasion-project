@@ -171,6 +171,27 @@ class AlienInvasion:
             self.settings.x_square_direction *= -1  # Reverse X movement only
         if hit_y:
             self.settings.y_square_direction *= -1  # Reverse Y movement only
+
+    def _ship_hit(self):
+        """Respond to the ship being hit by the square."""
+        if self.stats.ships_left > 0:
+            # Decrement ships left.
+            self.stats.ships_left -= 1
+
+            # Get rid of any remaining bullets and square.
+            self.bullets.empty()
+            self.square.empty()
+
+            # Create a new square and center the ship.
+            self._create_square() 
+            self.ship.center_ship()
+
+            # Pause.
+            sleep (1.0)
+        
+        else:
+            self.game_active = False
+            pygame.mouse.set_visible(True)
     
 
     def _update_screen(self):
