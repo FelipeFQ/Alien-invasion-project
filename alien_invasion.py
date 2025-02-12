@@ -102,7 +102,7 @@ class AlienInvasion:
 
     def _check_bullet_square_collitions(self):
         """Respond to bullet-square collitions."""
-        # Remove any bullets and aliens that have collided.
+        # Remove any bullets and squares that have collided.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.square, True, True)
         

@@ -16,7 +16,8 @@ class Square(Sprite):
         self.color = self.settings.square_color 
 
         # Start the square on the right center of the screen.
-        self.rect.midright= self.screen_rect.midright
+        self.rect.right = self.screen_rect.right - self.settings.square_width
+        self.rect.centery = self.screen_rect.centery
 
         # Store the square's exact position.
         self.x = float(self.rect.x)
