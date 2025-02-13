@@ -124,6 +124,7 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
+                self._square_missed()
 
         
         self._check_bullet_square_collitions()
@@ -143,6 +144,10 @@ class AlienInvasion:
         """Check if the square is at an edge, then update positions."""
         self._check_square_edges()
         self.square.update()
+
+        # Look for square-ship collitions.
+        if pygame.sprite.spritecollideany(self.ship, self.square):
+            self._ship_hit()
 
     def _create_square(self):
         """Create the training square."""
@@ -192,7 +197,16 @@ class AlienInvasion:
         else:
             self.game_active = False
             pygame.mouse.set_visible(True)
-    
+
+    def _square_missed(self):
+        if self.stats.attempts_left > 0:
+            # Decrement attempts left.
+            self.stats.attempts_left -= 1
+
+        else:
+            # Decrement of ships left if the play misses to many times
+            self._ship_hit()
+            self.stats.attempts_left = self.stats.original_misses_limit 
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""

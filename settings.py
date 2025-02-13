@@ -11,7 +11,6 @@ class Settings:
         # Ship settings
         self.ship_speed = 1.5
         self.ship_limit = 3
-        self.ships_left = 3
 
         # Bullets settings
         self.bullet_speed = 3.0
@@ -25,7 +24,7 @@ class Settings:
         self.square_height = 70  
         self.square_speed = 1.0
         self.square_color = (255, 0, 0)  
-        self.misses_limit = 10
+        self.misses_limit = 3
         self.hits = 0
 
         # Square_direction 
