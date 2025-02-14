@@ -53,7 +53,8 @@ class AlienInvasion:
 
     def _start_game(self):
         """Start a new game by resetting stats and creating new game elements."""
-        # Reset game statistics.
+        # Reset game setiings & statistics
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.game_active = True
 
@@ -155,6 +156,7 @@ class AlienInvasion:
             # Destroy existing bullets and create nes fleet.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions."""
