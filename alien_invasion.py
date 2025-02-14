@@ -56,7 +56,8 @@ class AlienInvasion:
     
     def _start_game(self):
         """Start a new game by resetting the stats and creating ne game elements."""
-        # Reset game statistics
+        # Reset game setiings & statistics
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.game_active = True
         
@@ -146,6 +147,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _check_aliens_bottom(self):
         """Check if any alien have reached the bottom of the screen."""
