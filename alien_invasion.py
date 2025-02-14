@@ -52,6 +52,23 @@ class AlienInvasion:
 
             self._update_screen()
             self.clock.tick(60)
+
+    def _start_game(self):
+        """Start a new game by resetting stats and creating new game elements."""
+        # Reset game statistics.
+        self.stats.reset_stats()
+        self.game_active = True
+
+        # Get rid of any remaining bullets and squares.
+        self.bullets.empty()
+        self.square.empty()
+
+        # Create a new square and center the ship.
+        self._create_square()
+        self.ship.center_ship()
+
+        # Hide the mouse cursor.
+        pygame.mouse.set_visible(False)
             
     
     def _check_events(self):
@@ -71,20 +88,7 @@ class AlienInvasion:
         """Start a new game when teh player clicks play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
-            # Reset game statistics.
-            self.stats.reset_stats()
-            self.game_active = True
-
-            # Get rid of any remainig bullets and squares.
-            self.bullets.empty()
-            self.square.empty()
-
-            # Create a new square and center teh ship
-            self._create_square()
-            self.ship.center_ship()
-
-            # Hide the mouse cursor.
-            pygame.mouse.set_visible(False)
+            self._start_game()
 
 
     def _check_keydown_events(self, event):
