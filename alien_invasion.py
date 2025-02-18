@@ -56,6 +56,7 @@ class AlienInvasion:
     def _start_game(self):
         """Start a new game by resetting stats and creating new game elements."""
         # Reset game statistics.
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.game_active = True
 
@@ -146,6 +147,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new square.
             self.bullets.empty()
             self._create_square()
+            self.settings.increase_speed()
 
     def _update_square(self):
         """Check if the square is at an edge, then update positions."""
