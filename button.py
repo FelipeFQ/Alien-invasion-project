@@ -3,16 +3,16 @@ import pygame.font
 class Button:
     """A class to build buttons for the game."""
 
-    def __init__(self, ai_game, msg):
+    def __init__(self, ai_game, msg, width=200, height=50, color=(0, 135, 0), text_size=48):
         """Initialize button attributes."""
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
 
         # Set the dimensions and properties of the button.
-        self.width, self.heigh = 200, 50
-        self.button_color = (0, 135, 0)
+        self.width, self.heigh = width, height
+        self.button_color = color
         self.text_color = (255, 255, 255)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont(None, text_size)
 
         # Build the button's rect object and center it.
         self.rect = pygame.Rect(0, 0, self.width, self.heigh)
@@ -23,7 +23,7 @@ class Button:
 
         # Create instruction text and properties
         self.instruction_font = pygame.font.SysFont(None, 25)
-        self.instruction_text_color = (0, 135, 0)
+        self.instruction_text_color = color
         self._prep_instruction("Press 'P' to start the game")
 
     def _prep_msg(self, msg):
