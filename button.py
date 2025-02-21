@@ -41,7 +41,7 @@ class Button:
             self.instruction_image = self.instruction_font.render(text, True, self.instruction_text_color)
             self.instruction_rect = self.instruction_image.get_rect()
             self.instruction_rect.centerx = self.rect.centerx
-            self.instruction_rect.top = self.rect.bottom + 10  # Position below button
+            self.instruction_rect.top = self.rect.top - 20  # Position above button
 
     def draw_button(self):
         """Draw blank button and then draw message."""

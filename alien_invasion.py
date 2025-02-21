@@ -58,9 +58,9 @@ class AlienInvasion:
         total_width = 2 * button_width + button_spacing
 
         self.play_button = Button(self, "Play", x_offset=-total_width // 3,
-                        instruction_text="Press 'P' to start the game")
+                        instruction_text="Press 'P' to")
         self.level_button = Button(self, "Level", x_offset=total_width // 3,
-                        instruction_text="Press 'L' to select difficulty")
+                        instruction_text="Press 'L' to select starting")
 
     def _start_game(self):
         """Start a new game by resetting stats and creating new game elements."""
