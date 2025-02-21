@@ -36,9 +36,9 @@ class AlienInvasion:
         # Start Alien Invasion in an inactive state.
         self.game_active = False
 
-        # Make the play button.
-        self.play_button = Button(self, "Play")
-
+        # Make the Play and Level buttons.
+        self._create_buttons()
+        
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -51,8 +51,19 @@ class AlienInvasion:
                 self._update_aliens()
                 self._update_screen()
 
-            self._update_screen() # Ensure screen updates even when inactive.GPT
+            self._update_screen() 
             self.clock.tick(60)
+
+    def _create_buttons(self):
+        """Create the Play and Level buttons."""
+        button_spacing = 20  
+        button_width = 200
+        total_width = 2 * button_width + button_spacing
+
+        self.play_button = Button(self, "Play", x_offset=-total_width // 3, instruction_text="Press 'P' to start the game")
+        self.level_button = Button(self, "Level", x_offset=total_width // 3, instruction_text="Press 'L' to select difficulty")
+
+
     
     def _start_game(self):
         """Start a new game by resetting the stats and creating ne game elements."""
@@ -238,6 +249,7 @@ class AlienInvasion:
         # Draw the play button if the game is inactive.
         if not self.game_active:
             self.play_button.draw_button()
+            self.level_button.draw_button()
         
         pygame.display.flip()
 
