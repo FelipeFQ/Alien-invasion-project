@@ -38,6 +38,9 @@ class AlienInvasion:
 
         # Make the Play and Level buttons.
         self._create_buttons()
+
+        # Set difficulty menu as False by default.
+        self.show_difficulty_menu = False  
         
 
     def run_game(self):
@@ -63,6 +66,20 @@ class AlienInvasion:
         self.play_button = Button(self, "Play", x_offset=-total_width // 3, instruction_text="Press 'P' to start the game")
         self.level_button = Button(self, "Level", x_offset=total_width // 3, instruction_text="Press 'L' to select difficulty")
 
+        # Create difficulty buttons (hidden initially)
+        difficulty_labels = ["Easy", "Medium", "Hard"]
+        self.difficulty_buttons = []
+
+        for index, label in enumerate(difficulty_labels):
+            button = Button(
+                self, label, 
+                x_offset=total_width // 3,  # Same x as Level button
+                width=180,  # Slightly smaller than Play button
+                height=50
+            )
+            button.rect.y = self.level_button.rect.y + (index + 1) * 70  # Space them vertically
+            button.msg_image_rect.center = button.rect.center 
+            self.difficulty_buttons.append(button)  # Store in list
 
     
     def _start_game(self):
@@ -96,13 +113,21 @@ class AlienInvasion:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
+                self._check_menu_buttons(mouse_pos)
 
-    def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clcks Play."""
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
+    def _check_menu_buttons(self, mouse_pos):
+        """Start a new game when clicking Play or open the difficulty menu."""
+        if self.play_button.rect.collidepoint(mouse_pos) and not self.game_active:
             self._start_game()
+
+        elif self.level_button.rect.collidepoint(mouse_pos) and not self.show_difficulty_menu:
+            self.show_difficulty_menu = True  # Show difficulty buttons
+
+        for button in self.difficulty_buttons:
+            if button.rect.collidepoint(mouse_pos) and self.show_difficulty_menu:
+                selected_difficulty = button.msg  # Get the button text
+                self.settings.set_difficulty(selected_difficulty)  # Call the new method
+                self.show_difficulty_menu = False  # Hide menu after selection
 
 
     def _check_keydown_events(self, event):
@@ -249,7 +274,13 @@ class AlienInvasion:
         # Draw the play button if the game is inactive.
         if not self.game_active:
             self.play_button.draw_button()
-            self.level_button.draw_button()
+            
+            if self.show_difficulty_menu:
+                for button in self.difficulty_buttons:
+                    button.draw_button()
+
+            else:
+                self.level_button.draw_button()
         
         pygame.display.flip()
 

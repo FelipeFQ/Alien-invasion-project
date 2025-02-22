@@ -8,6 +8,8 @@ class Button:
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
 
+        self.msg = msg
+
         # Set the dimensions and properties of the button.
         self.width, self.height = width, height
         self.button_color = color

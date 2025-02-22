@@ -40,3 +40,14 @@ class Settings:
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
 
+    def set_difficulty(self, difficulty):
+        """Adjust game difficulty settings based on selection."""
+        if difficulty == "Easy":
+            self.speedup_scale = 1.1  # Normal speed
+        elif difficulty == "Medium":
+            self.speedup_scale = 1.2  # Slightly faster
+        elif difficulty == "Hard":
+            self.speedup_scale = 1.5  # Much faster
+
+        print(f"Difficulty set to {difficulty}, speedup_scale = {self.speedup_scale}")
+
