@@ -21,6 +21,7 @@ class Button:
 
         # The button message needs to be prepped only once.
         self._prep_msg(msg)
+        self.msg = msg
 
         self.instruction_text = instruction_text
         if self.instruction_text:
