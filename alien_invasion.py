@@ -286,9 +286,8 @@ class AlienInvasion:
         # Draw the play button if the game is inactive.
         if not self.game_active:
             self.play_button.draw_button()
-            self.level_button.draw_button()
-        
-        if self.show_difficulty_menu:
+            
+            if self.show_difficulty_menu:
                 for button in self.difficulty_buttons:
                     button.draw_button()
 
