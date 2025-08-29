@@ -91,6 +91,7 @@ class AlienInvasion:
         self.sb.prep_score()
         self.sb.prep_level()
         self.sb.prep_ships()
+        self.sb.prep_high_score() # prep the high score.
 
 
         self.game_active = True
@@ -111,6 +112,8 @@ class AlienInvasion:
         # Respond to keypresses and mouse events.
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                # If the user close the game save the high score.
+                self.stats._save_high_score()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -151,6 +154,7 @@ class AlienInvasion:
             # Move the ship down.
             self.ship.moving_down = True
         elif event.key == pygame.K_ESCAPE:
+            self.stats._save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()

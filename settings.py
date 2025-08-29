@@ -57,5 +57,3 @@ class Settings:
             self.speedup_scale = 1.2  # Slightly faster
         elif difficulty == "Hard":
             self.speedup_scale = 1.5  # Much faster
-
-        print(f"Difficulty set to {difficulty}, speedup_scale = {self.speedup_scale}")
