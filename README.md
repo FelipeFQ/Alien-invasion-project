@@ -1,6 +1,6 @@
 # Alien Invasion Game
 
-A Python-based 2D space shooter game built with Pygame, demonstrating Object-Oriented Programming concepts and clean code architecture. This project showcases my programming skills and serves as a portfolio piece for data science and software development opportunities.
+A Python-based 2D space shooter game built with Pygame, demonstrating Object-Oriented Programming concepts and clean code architecture.
 
 ## 🎮 Game Description
 
@@ -113,6 +113,31 @@ This project was created to demonstrate my learning journey in Python programmin
 - **Game Development**: Basic game loop, event handling, and rendering
 - **Code Organization**: Logical project structure and import management
 - **Problem Solving**: Breaking down complex game mechanics into manageable parts
+
+## 🌿 Branch Structure
+
+This repository contains different versions and iterations of the game, demonstrating the development process:
+
+### **`main`** (Default Branch)
+- Complete, polished version with all features
+- Full game loop, scoring system, and multiple levels
+- Best demonstration of programming skills and game design
+- Primary showcase version of the project
+
+### **`basic`** (Basic Version)
+- Initial version of the game with core mechanics
+- Basic ship movement, alien spawning, and shooting
+- Foundation for more advanced features
+
+### **`sideways`** (Experimental Branch)
+- Side projects and experimental features
+- Testing new game mechanics and ideas
+- Shows exploration of different programming approaches
+
+### **`training`** (Learning Branch)
+- Practice implementations and learning exercises
+- Code experiments and skill development
+- Demonstrates continuous learning and improvement
 
 ## 🤝 Contributing
 
