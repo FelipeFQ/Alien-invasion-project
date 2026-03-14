@@ -12,7 +12,7 @@ from alien import Alien
 from button import Button
 
 class AlienInvasion:
-    """Overall to manage game assets ang behaviors"""
+    """Overall class to manage game assets and behaviors."""
 
     def __init__(self):
         """Initialize the game and create game resources."""
@@ -83,9 +83,14 @@ class AlienInvasion:
             button.msg_image_rect.center = button.rect.center 
             self.difficulty_buttons.append(button)  # Store in list
 
+    def _quit_game(self) -> None:
+        """Persist state and exit cleanly."""
+        self.stats._save_high_score()
+        sys.exit()
+
     def _start_game(self):
         """Start a new game by resetting stats and creating new game elements."""
-        # Reset game setiings & statistics
+        # Reset game settings & statistics
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.sb.prep_score()
@@ -113,8 +118,7 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 # If the user close the game save the high score.
-                self.stats._save_high_score()
-                sys.exit()
+                self._quit_game()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -154,8 +158,7 @@ class AlienInvasion:
             # Move the ship down.
             self.ship.moving_down = True
         elif event.key == pygame.K_ESCAPE:
-            self.stats._save_high_score()
-            sys.exit()
+            self._quit_game()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
         elif event.key == pygame.K_p:
@@ -181,11 +184,11 @@ class AlienInvasion:
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
-            self.bullets.add (new_bullet)
+            self.bullets.add(new_bullet)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
-        # Update bullet postions.
+        # Update bullet positions.
         self.bullets.update()
 
         # Get rid of bullets that have disappeared.
@@ -197,7 +200,7 @@ class AlienInvasion:
 
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collision."""
-        # Remove any bullets and aliens that have collied.
+        # Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
         
@@ -209,7 +212,7 @@ class AlienInvasion:
 
         
         if not self.aliens:
-            # Destroy existing bullets and create nes fleet.
+            # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
@@ -224,7 +227,7 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
 
-        # Look for aliens-ship collitions.
+        # Look for alien-ship collisions.
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self._ship_hit()
 
@@ -281,7 +284,7 @@ class AlienInvasion:
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
         if self.stats.ships_left > 0:
-            # Decrement ships leftn and update scoreboard.
+            # Decrement ships left and update scoreboard.
             self.stats.ships_left -= 1 
             self.sb.prep_ships()
 

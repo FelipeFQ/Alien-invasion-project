@@ -14,7 +14,7 @@ class Button:
         self.text_color = (3, 2, 0)
         self.font = pygame.font.SysFont(None, text_size)
 
-        # Build the button's rect object and posotion it with X_offset.
+        # Build the button's rect object and position it with x_offset.
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.rect.center = self.screen_rect.center
         self.rect.x += x_offset 
@@ -27,14 +27,14 @@ class Button:
         if self.instruction_text:
             self._prep_instruction(self.instruction_text)
 
-    def _prep_msg(self, msg):
+    def _prep_msg(self, msg: str) -> None:
         """Turn msg into a rendered image and center text on the button."""
         self.msg_image = self.font.render(msg, True, self.text_color, 
                 self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.rect.center
 
-    def _prep_instruction (self, text):
+    def _prep_instruction(self, text: str) -> None:
         """Render the instruction text below the button."""
         if text:
             self.instruction_font = pygame.font.SysFont(None, 25)
@@ -44,7 +44,7 @@ class Button:
             self.instruction_rect.centerx = self.rect.centerx
             self.instruction_rect.top = self.rect.top - 20  # Position above button
 
-    def draw_button(self):
+    def draw_button(self) -> None:
         """Draw blank button and then draw message."""
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)

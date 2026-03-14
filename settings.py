@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 class Settings:
     """A class to store all the settings for Alien Invasion."""
 
@@ -20,7 +25,7 @@ class Settings:
         # Alien settings
         self.fleet_drop_speed = 20
 
-        # How quickly the game spees up.
+        # How quickly the game speeds up.
         self.speedup_scale = 1.1
 
         # How quickly the alien point values increase
@@ -28,7 +33,7 @@ class Settings:
 
         self.initialize_dynamic_settings()
 
-    def initialize_dynamic_settings(self):
+    def initialize_dynamic_settings(self) -> None:
         """Initialize settings that change throughout the game"""
         self.ship_speed = 1.5
         self.bullet_speed = 2.5
@@ -40,16 +45,16 @@ class Settings:
         # Scoring settings.
         self.alien_points = 50
 
-    def increase_speed(self):
+    def increase_speed(self) -> None:
         """Increase speed settings and alien point values."""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
 
         self.alien_points = int(self.alien_points * self.score_scale)
-        print (self.alien_points)
+        logger.debug("alien_points increased to %d", self.alien_points)
 
-    def set_difficulty(self, difficulty):
+    def set_difficulty(self, difficulty: str) -> None:
         """Adjust game difficulty settings based on selection."""
         if difficulty == "Easy":
             self.speedup_scale = 1.1  # Normal speed
