@@ -1,4 +1,4 @@
-# Alien Invasion Game
+# 👾 Alien Invasion Game
 
 A Python-based 2D space shooter game built with Pygame, demonstrating Object-Oriented Programming concepts and clean code architecture.
 
